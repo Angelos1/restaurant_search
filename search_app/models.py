@@ -1,8 +1,6 @@
 from django.db import models
 
 
-# Create your models here.
-
 class SearchQuery(models.Model):
     id = models.AutoField(primary_key=True)
     ip_address = models.GenericIPAddressField()
