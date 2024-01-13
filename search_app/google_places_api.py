@@ -8,6 +8,15 @@ class GooglePlacesAPI:
     def __init__(self, api_key):
         self.api_key = api_key
 
+    def _make_request(self, url, params):
+        try:
+            response = requests.get(url, params=params)
+            response.raise_for_status()
+            return response.json()
+        except requests.RequestException as e:
+            print(f"Error in API request: {e}")
+            return {}
+
     def search_restaurants(self, city_name):
         params = {
             'query': f'restaurants in {city_name}',
@@ -17,8 +26,8 @@ class GooglePlacesAPI:
         # url = f"{self.BASE_URL}?query={params['query']}&key={params['key']}"
         # print("API Request URL:", url)
 
-        response = requests.get(self.BASE_URL, params=params)
-        results = response.json().get('results', [])
+        response_json = self._make_request(self.BASE_URL, params)
+        results = response_json.get('results', [])
 
         # print("API response:", response.json())
         # print("results:", len(results))
@@ -36,8 +45,8 @@ class GooglePlacesAPI:
             'place_id': place_id,
             'key': self.api_key,
         }
-        response = requests.get(self.DETAILS_URL, params=params)
-        details = response.json().get('result', {})
+        response_json = self._make_request(self.DETAILS_URL, params)
+        details = response_json.get('result', {})
 
         # Extract relevant details, you may need to adapt this based on the actual structure of the response
         restaurant_details = {
