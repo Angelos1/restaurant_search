@@ -1,14 +1,16 @@
 from django.shortcuts import render
 from django.views import View
-from django.http import HttpResponseRedirect
-from .models import SearchQuery, SearchQueryCounter
+from .models import SearchQuery
 from .google_places_api import GooglePlacesAPI
-import time
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config.ini')
 
 
 class SearchView(View):
     template_name = 'search_app/search.html'
-    google_api_key = 'AIzaSyCOW1RN90skRAQw5BCdtE06NUwu2qpVv6c'
+    google_api_key = config.get('GOOGLE', 'api_key')
 
     def get(self, request):
         return render(request, self.template_name)
