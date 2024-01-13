@@ -15,40 +15,44 @@
         <input type="text" id="city_name" name="city_name" required>
         <button type="button" onclick="submitForm()">Search</button>
     </form>
-    {% if city_name %}
-        <h2>Results for {{ city_name }}</h2>
-        {% if restaurants %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Restaurant Name</th>
-                        <th>Address</th>
-                        <th>Rating</th>
-                        <th>Menu</th>
-                        <!-- Add more fields as needed -->
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for restaurant in restaurants %}
+    {% if error_message %}
+    <p style="color: red;">{{ error_message }}</p>
+    {% else %}
+        {% if city_name %}
+            <h2>Results for {{ city_name }}</h2>
+            {% if restaurants %}
+                <table>
+                    <thead>
                         <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td>{{ restaurant.name }}</td>
-                            <td>{{ restaurant.address }}</td>
-                            <td>{{ restaurant.rating }}</td>
-                            <td>{% if restaurant.menu %}
-                                    <a href="{{ restaurant.menu }}" target="_blank">View Menu</a>
-                                {% else %}
-                                    No menu available
-                                {% endif %}
-                            </td>
+                            <th>#</th>
+                            <th>Restaurant Name</th>
+                            <th>Address</th>
+                            <th>Rating</th>
+                            <th>Menu</th>
                             <!-- Add more fields as needed -->
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <p>No restaurants found.</p>
+                    </thead>
+                    <tbody>
+                        {% for restaurant in restaurants %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ restaurant.name }}</td>
+                                <td>{{ restaurant.address }}</td>
+                                <td>{{ restaurant.rating }}</td>
+                                <td>{% if restaurant.menu %}
+                                        <a href="{{ restaurant.menu }}" target="_blank">View Menu</a>
+                                    {% else %}
+                                        No menu available
+                                    {% endif %}
+                                </td>
+                                <!-- Add more fields as needed -->
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No restaurants found.</p>
+            {% endif %}
         {% endif %}
     {% endif %}
 

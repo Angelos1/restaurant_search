@@ -33,7 +33,11 @@ class SearchView(View):
 
         # Make Google API request and retrieve a list of restaurants based on the city_name
         google_api = GooglePlacesAPI(api_key=self.google_api_key)
-        restaurants = google_api.search_restaurants(city_name)
+        try:
+            restaurants = google_api.search_restaurants(city_name)
+        except Exception as e:
+            error_message = "Something went wrong, please contact the administrator - Error message: " + str(e)
+            return render(request, self.template_name, {'error_message': error_message})
 
         # Render the HTML page with the returned search results
         return render(request, self.template_name, {'city_name': city_name, 'restaurants': restaurants})
