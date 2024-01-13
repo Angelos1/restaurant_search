@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'search_app/styles.css' %}">
+    <title>Restaurant Search</title>
+</head>
+<body>
+    <h1>Restaurant Search</h1>
+    <form id="searchForm" method="post" action="{% url 'search' %}" autocomplete="off">
+        {% csrf_token %}
+        <label for="city_name">City Name:</label>
+        <input type="text" id="city_name" name="city_name" required>
+        <button type="button" onclick="submitForm()">Search</button>
+    </form>
+    {% if city_name %}
+        <h2>Results for {{ city_name }}</h2>
+        {% if restaurants %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Restaurant Name</th>
+                        <th>Address</th>
+                        <th>Rating</th>
+                        <th>Menu</th>
+                        <!-- Add more fields as needed -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for restaurant in restaurants %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ restaurant.name }}</td>
+                            <td>{{ restaurant.address }}</td>
+                            <td>{{ restaurant.rating }}</td>
+                            <td>{% if restaurant.menu %}
+                                    <a href="{{ restaurant.menu }}" target="_blank">View Menu</a>
+                                {% else %}
+                                    No menu available
+                                {% endif %}
+                            </td>
+                            <!-- Add more fields as needed -->
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No restaurants found.</p>
+        {% endif %}
+    {% endif %}
+
+    <script>
+        function submitForm() {
+            document.getElementById('searchForm').submit();
+        }
+
+        // For refreshing without resubmitting the previously submitted form
+        if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+        }
+
+    </script>
+</body>
+</html>
