@@ -27,17 +27,18 @@ Go to [127.0.0.1:8000/search/](127.0.0.1:8000/search/) or [localhost:8000/search
 which is the main page for our restaurants searching functionality.
 
 Enter a city name in the search bar and click search to get the results table of restaurants in that city.
+If you have a _"csrf token"_ error, just clean your browsing data.
 
 You can notice that it takes some time to retrieve the restaurant results. That is because many Google 
 API calls are done in the backend everytime we search for restaurants in a city. This is something that needs to be optimized
-and it is explained in the **_Improvements/discussion_** section of this file.
+and it is explained at point 2 in the **_Improvements/discussion_** section of this file.
 
 Do a couple of searches. For example search for restaurants in London, Athens, Milano. 
-Search for restaurants London three times in  order to see the query counter increased in the admin page. 
+Search for restaurants in London three times in  order to see the query counter increased in the admin page. 
 
 ## Using the admin page.
 In the admin page we can view the records in the app's database.
-The database of the app has two tables the SearchQuery and the SearchQueryCounter tables.
+The database of the app has two tables, the SearchQuery and the SearchQueryCounter tables.
 
 Go to [127.0.0.1:8000/admin/](127.0.0.1:8000/admin/) or [localhost:8000/admin/](localhost:8000/admin/).
 #### - Sign in:
@@ -47,10 +48,10 @@ Password: adminadmin
 ```
 #### - View the search query data and number of times each query was submitted:
 
-Click on the **_Search querys_** to see the submitted queries with the user's IP address 
-and timestamp (See image below).
+Click on the **_Search querys_** (circled with red in the image below) to see the submitted queries with the user's IP address 
+and timestamp.
 
-Click on the **_Search query counters_** to see number of times each query was submitted (See image below).
+Click on the **_Search query counters_** (circled with red in the image below) to see number of times each query was submitted.
 ![](images/admin_page.png)
 
 
@@ -68,8 +69,8 @@ constraint it won't be able to add a search query in the SearchQuery table the f
 exist in the SearchQueryCounter table and that will break the constraint.
 2. We need to use another API for getting the restaurants because currently Google API cannot give us 
 city, menus and ratings for restaurants with one API call. That is why we need to first retrieve the restaurants ids 
-with one API call and the FOR EACH restaurant id we need to make another API call to retrieve all the info we need. 
-It is like a JOIN operation of API calls and it significantly increases the latencey.
+with one API call and then FOR EACH restaurant id we need to make another API call to retrieve all the info we need. 
+It is like a JOIN operation of API calls and it significantly increases the latency.
 3. Add pagination to be able to view more restaurants. We need to use next_page_token field of the Google API response.
 Calling the request with the same next_page_token will return the next page of results (this is from the 
 [Google Api Documentation](https://developers.google.com/maps/documentation/places/web-service/search-text)).
