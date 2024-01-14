@@ -6,4 +6,4 @@ class SearchAppConfig(AppConfig):
     name = "search_app"
 
     def ready(self):
-        import search_app.signals
+        import search_app.counter_update
